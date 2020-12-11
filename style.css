@@ -2,7 +2,7 @@ html {
     font-size: 20px;
     background: #e9ecc4;
     background-size: 100% 100%;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family: Times;
     color: #561c20;
 }
 
@@ -11,7 +11,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .btn {
@@ -27,11 +27,16 @@ body {
     border-color: #561c20;
 }
 
+.btn img {
+    pointer-events: none;
+}
+
 img {
     width: 125px;
     height: 150px;
 }
 
 .text {
-    margin: 50px;
+    align-content: center;
+    text-align: center;
 }

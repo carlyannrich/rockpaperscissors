@@ -1,26 +1,14 @@
 // establishes computer random choice
-
+let amountOfGame = 0;
 let playerTotal = 0;
 let compTotal = 0;
+
 const buttons = document.querySelectorAll(".btn");
 
-const playerSelection = document.querySelector("#playerTotal");
-player.textContent = `your score: ${playerTotal}`;
-
-const computerSelection = document.querySelector("#compTotal");
-computer.textContent = `computer score: ${compTotal}`;
-
-buttons.forEach((button) => {
-  button.addEventListener("click", () => {
-    if (playerTotal > compTotal) {
-      output.textContent = "It is undeniable. You are the champion.";
-    } else if (playerTotal === compTotal) {
-      output.textContent = "You drew, fair play.";
-    } else if (playerTotal < compTotal) {
-      output.textContent = "Sorry, but you are a loser of THE GAME.";
-    }
-  });
-});
+const setGameTotals = (id, player, total) => {
+  const element = document.getElementById(id);
+  element.innerHTML = `${player} score: ${total}`;
+};
 
 // plays one round of the game - works out who won
 
@@ -35,49 +23,54 @@ const outcome = {
   draw: ["rockrock", "paperpaper", "scissorsscissors"],
 };
 
-function singleRound() {
-  // assigns computer and player selection
-  const playerSelection = button.id;
-  player.textContent = `your score: ${playerTotal}`;
+function singleRound(playersChoice) {
   const computerSelection = computerPlay();
-  computer.textContent = `computer score: ${compTotal}`;
 
-  // switch (playerSelection + computerSelection) {
-  //   case "rockscissors":
-  //   case "paperrock":
-  //   case "scissorspaper":
-  //     return "Hooray! You Win!";
-  //   case "rockpaper":
-  //   case "paperscissors":
-  //   case "scissorsrock":
-  //     return "Oh dear... You Lose!";
-  //   case "rockrock":
-  //   case "paperpaper":
-  //   case "scissorsscissors":
-  //     return "It's a Draw!";
-  // }
-
-  if (outcome.win.includes(playerSelection + computerSelection)) {
-    playerTotal += 1;
+  if (outcome.win.includes(playersChoice + computerSelection)) {
+    playerTotal++;
     return "Hooray! You Win!";
-  } else if (outcome.lose.includes(playerSelection + computerSelection)) {
-    compTotal += 1;
+  } else if (outcome.lose.includes(playersChoice + computerSelection)) {
+    compTotal++;
     return "Oh dear... You Lose!";
-  } else if (outcome.draw.includes(playerSelection + computerSelection)) {
+  } else if (outcome.draw.includes(playersChoice + computerSelection)) {
     return "It's a Draw!";
   } else {
     return "Uhoh error...";
   }
 }
 
-function game() {
-  player.textContent = `your score: ${playerTotal}`;
-  computer.textContent = `computer score: ${compTotal}`;
-  let i = 1;
-  while (i <= 5) {
-    console.log(singleRound());
-    i++;
+function totalScore() {
+  if (playerTotal > compTotal) {
+    return "It is undeniable. You are the champion.";
+  } else if (playerTotal === compTotal) {
+    return "You drew, fair play.";
+  } else if (playerTotal < compTotal) {
+    return "Sorry, but you are a loser of THE GAME.";
   }
 }
 
-game();
+function game(playersChoice) {
+  if (amountOfGame === 0)
+    document.getElementById("output").innerHTML = "good luck...";
+  if (amountOfGame < 4) {
+    singleRound(playersChoice);
+    setGameTotals("playerTotal", "player", playerTotal);
+    setGameTotals("compTotal", "computer", compTotal);
+    amountOfGame++;
+  } else {
+    // game over func
+    // highlight winner
+    // reset amount of games
+    document.getElementById("output").innerHTML = totalScore();
+    amountOfGame = 0;
+    playerTotal = 0;
+    compTotal = 0;
+  }
+}
+
+buttons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    const playersChoice = event.target.id;
+    game(playersChoice);
+  });
+});
